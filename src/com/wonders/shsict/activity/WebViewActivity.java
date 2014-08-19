@@ -29,6 +29,7 @@ import com.wonders.shsict.service.ScheduleService;
 import com.wonders.shsict.utils.ConfigUtil;
 import com.wonders.shsict.utils.ScheduleUtil;
 import com.wonders.shsict.utils.WebAppInterface;
+import com.wonders.shsict.task.CheckUpdateTask;
 
 public class WebViewActivity extends Activity {
 	private final static int INTERVAL = 60;
@@ -61,6 +62,11 @@ public class WebViewActivity extends Activity {
 			isFavouriteUpdate = false;
 			gotoFavourite();
 		}
+		
+		String versionUrl = ConfigUtil.cacheShsictURL(this) + "/Service/IsUpdateService.svc/version/Android";;
+		//AUTO-UPDATE
+		CheckUpdateTask task = new CheckUpdateTask(versionUrl , this);
+		task.execute(1000);
 	}
 
 	/**

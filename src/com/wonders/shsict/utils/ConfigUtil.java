@@ -16,21 +16,24 @@ import com.wonders.shsict.R;
 
 public class ConfigUtil {
 	protected static final String PREFS_NAME = "ShsictSetting";
-	protected static final String SHSICT_URL_DEFAULT = "http://mobile.shsict.com:8080/";
-	protected static String SHSICT_URL = SHSICT_URL_DEFAULT;
+	public static String cachedServerIp = null;
+	protected static String SHSICT_URL = "SERVER_IP_PORT";
 
 	/**
 	 * 
 	 * @return eg http://1.1.1.1:8080
 	 */
 	public static String cacheShsictURL(Activity activity) {
+		if(cachedServerIp != null)
+			return cachedServerIp;
+			
 		SharedPreferences settings = activity.getSharedPreferences(PREFS_NAME, 0);
 		String url = settings.getString(SHSICT_URL, "ERROR");
 		if (url.equals("ERROR")) {
 			return null;
 		} else {
-			SHSICT_URL = url;
-			return url;
+			cachedServerIp = url;
+			return cachedServerIp;
 		}
 	}
 
@@ -90,6 +93,7 @@ public class ConfigUtil {
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putString(SHSICT_URL, url);
 		editor.commit();
+		cachedServerIp = url;
 	}
 
 	public static boolean isNetworkConnected(Context context) {
